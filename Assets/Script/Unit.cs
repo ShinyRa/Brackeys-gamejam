@@ -4,22 +4,32 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    Vector3 xVelocity;
-    // Start is called before the first frame update
-    void Start()
+
+    public string unitName;
+    public int unitLevel;
+
+    public int damage;
+
+    public int maxHP;
+    public int currentHP;
+
+    public bool TakeDamage(int dmg)
     {
-        xVelocity = new Vector3((float)(1f * Time.deltaTime), 0, 0);
+        currentHP -= dmg;
+
+        if (currentHP <= 0)
+            return true;
+        else
+            return false;
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool GainHealth(int hp)
     {
-        float time = Time.deltaTime;
-        if (time == 1f)
-        {
-            Debug.Log(time);
-        }
-        transform.position += xVelocity;
-    }
+        currentHP += hp;
 
+        if (currentHP == maxHP)
+            return true;
+        else
+            return false;
+    }
 }
