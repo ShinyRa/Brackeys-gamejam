@@ -23,6 +23,8 @@ namespace UnityBuilderAction
             PlayerSettings.bundleVersion = options["buildVersion"];
             PlayerSettings.macOS.buildNumber = options["buildVersion"];
             PlayerSettings.Android.bundleVersionCode = int.Parse(options["androidVersionCode"]);
+            PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Gzip;
+
 
             // Apply build target
             var buildTarget = (BuildTarget)Enum.Parse(typeof(BuildTarget), options["buildTarget"]);
