@@ -29,7 +29,7 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          customImage: "2021.3.8f1-webgl-1"
+          customImage: "2021.3.8f1-webgl-1.0"
 
       # Output
       - uses: actions/upload-artifact@v2
