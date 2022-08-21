@@ -31,6 +31,7 @@ jobs:
         with:
           customImage: "unityci/editor:ubuntu-2021.3.8f1-webgl-1.0.1"
           customParameters: "-nographics"
+          targetPlatform: WebGL
 
       # Output
       - uses: actions/upload-artifact@v2
