@@ -8,7 +8,11 @@ public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 public class BattleSystem : MonoBehaviour
 {
     public GameObject playerPrefab;
-    public GameObject enemyPrefab;
+    public GameObject mushroomPrefab;
+    public GameObject goblinPrefab;
+
+    public GameObject playerGO;
+    public GameObject enemyGO;
 
     public Transform playerBattleStation;
     public Transform enemyBattleStation;
@@ -23,19 +27,39 @@ public class BattleSystem : MonoBehaviour
 
     public BattleState state;
 
+    private int level = 1;
+
     // Start is called before the first frame update
     void Start()
     {
         state = BattleState.START;
-        StartCoroutine(SetupBattle());
+        hotBar.SetActive(false);
+        playerGO = SimplePool.Spawn(playerPrefab, playerBattleStation);
+        StartCoroutine(SetupBattle(level));
     }
 
-    IEnumerator SetupBattle()
+    void NextLevel()
     {
+        state = BattleState.START;
         hotBar.SetActive(false);
-        GameObject playerGO = SimplePool.Spawn(playerPrefab, playerBattleStation);
+        StartCoroutine(SetupBattle(level));
+    }
+
+    IEnumerator SetupBattle(int level)
+    {
+        switch (level)
+        {
+            case 1:
+                enemyGO = SimplePool.Spawn(mushroomPrefab, enemyBattleStation);
+                break;
+            case 2:
+                enemyGO = SimplePool.Spawn(goblinPrefab, enemyBattleStation);
+                break;
+            default:
+                break;
+        }
+
         playerUnit = playerGO.GetComponent<Unit>();
-        GameObject enemyGO = SimplePool.Spawn(enemyPrefab, enemyBattleStation);
         enemyUnit = enemyGO.GetComponent<Unit>();
 
         playerHUD.SetHUD(playerUnit);
@@ -63,7 +87,7 @@ public class BattleSystem : MonoBehaviour
 
         if (currentState == State.DEAD)
         {
-            SimplePool.Despawn(enemyPrefab);
+            SimplePool.Despawn(enemyGO);
             state = BattleState.WON;
             EndBattle();
         }
@@ -74,19 +98,33 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    public void OnAttackButton()
+    public void OnAttackButton(string attackType)
+    {
+        if (state != BattleState.PLAYERTURN)
+            return;
+        playerUnit.DealAttack(attackType);
+        hotBar.SetActive(false);
+        StartCoroutine(PlayerAttack());
+    }
+
+    public void OnHealButton()
     {
         if (state != BattleState.PLAYERTURN)
             return;
 
+        playerUnit.GainHealth(1);
+        playerHUD.SetHP(playerUnit.currentHP);
+
         hotBar.SetActive(false);
-        StartCoroutine(PlayerAttack());
+        StartCoroutine(EnemyTurn());
     }
 
     IEnumerator EnemyTurn()
     {
         hotBar.SetActive(false);
         yield return new WaitForSeconds(1f);
+
+        enemyUnit.DealAttack("basicAttack");
 
         playerUnit.TakeDamage(enemyUnit.damage);
         State currentState = playerUnit.getState();
@@ -97,7 +135,6 @@ public class BattleSystem : MonoBehaviour
 
         if (currentState == State.DEAD)
         {
-            SimplePool.Despawn(playerPrefab);
             state = BattleState.LOST;
             EndBattle();
         }
@@ -113,10 +150,13 @@ public class BattleSystem : MonoBehaviour
         if (state == BattleState.WON)
         {
             Debug.Log("You WON");
+            level++;
+            NextLevel();
         }
         else if (state == BattleState.LOST)
         {
             Debug.Log("You LOST");
         }
+
     }
 }

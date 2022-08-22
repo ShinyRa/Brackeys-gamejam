@@ -1,11 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-public enum State { ALIVE, DEAD }
+public enum State { ALIVE, POISIONED, DEAD }
+
 
 public class Unit : MonoBehaviour
 {
+
+    // public GameObject tagPrefab;
+
+    // public GameObject UnitTagGO;
+
+    // public TextMeshProUGUI text;
+
+    // PlayerTagScript playerTag;
 
     public string unitName;
     public int unitLevel;
@@ -17,7 +27,25 @@ public class Unit : MonoBehaviour
 
     public Animator ani;
 
+    public string[] attackTypes;
+
     public State state = State.ALIVE;
+
+    public State getState() { return state; }
+
+    void Start()
+    {
+        // UnitTagGO = Instantiate(tagPrefab);
+        // playerTag = UnitTagGO.GetComponent<PlayerTagScript>();
+        // playerTag.parentObject = gameObject;
+        // text.text = unitName;
+        // Debug.Log(text);
+    }
+
+    public void DealAttack(string attackType)
+    {
+        ani.SetTrigger(attackType);
+    }
 
     public void TakeDamage(int dmg)
     {
@@ -31,18 +59,20 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public bool GainHealth(int hp)
+    public void GainHealth(int hp)
     {
-        currentHP += hp;
+        currentHP = currentHP + hp;
 
-        if (currentHP == maxHP)
-            return true;
-        else
-            return false;
+        ani.SetTrigger("jump");
+
+        if (currentHP >= maxHP)
+        {
+            currentHP = maxHP;
+        }
     }
 
-    public State getState()
+    void Update()
     {
-        return state;
+        Debug.Log(transform.position);
     }
 }
