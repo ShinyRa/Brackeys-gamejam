@@ -63,7 +63,7 @@ public class Unit : MonoBehaviour
     {
         currentHP = currentHP + hp;
 
-        ani.SetTrigger("jump");
+        ani.SetTrigger("heal");
 
         if (currentHP >= maxHP)
         {
