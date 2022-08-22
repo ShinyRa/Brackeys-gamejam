@@ -7,7 +7,6 @@ public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 
 public class BattleSystem : MonoBehaviour
 {
-
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
 
@@ -23,6 +22,7 @@ public class BattleSystem : MonoBehaviour
     public BattleHUD enemyHUD;
 
     public BattleState state;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,10 +32,10 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator SetupBattle()
     {
-        hotBar.SetActive(false); //myGameObject = GameObject var
-        GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
+        hotBar.SetActive(false);
+        GameObject playerGO = SimplePool.Spawn(playerPrefab, playerBattleStation);
         playerUnit = playerGO.GetComponent<Unit>();
-        GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
+        GameObject enemyGO = SimplePool.Spawn(enemyPrefab, enemyBattleStation);
         enemyUnit = enemyGO.GetComponent<Unit>();
 
         playerHUD.SetHUD(playerUnit);
@@ -49,34 +49,29 @@ public class BattleSystem : MonoBehaviour
 
     void PlayerTurn()
     {
-
-        hotBar.SetActive(true); //myGameObject = GameObject var
-        // yield return new WaitForSeconds(2f);
-
-        // state = BattleState.ENEMYTURN;
+        hotBar.SetActive(true);
     }
 
     IEnumerator PlayerAttack()
     {
-
-        bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
+        enemyUnit.TakeDamage(playerUnit.damage);
+        State currentState = enemyUnit.getState();
 
         enemyHUD.SetHP(enemyUnit.currentHP);
 
         yield return new WaitForSeconds(2f);
 
-        if (isDead)
+        if (currentState == State.DEAD)
         {
+            SimplePool.Despawn(enemyPrefab);
             state = BattleState.WON;
             EndBattle();
-
         }
         else
         {
             state = BattleState.ENEMYTURN;
             StartCoroutine(EnemyTurn());
         }
-
     }
 
     public void OnAttackButton()
@@ -93,17 +88,18 @@ public class BattleSystem : MonoBehaviour
         hotBar.SetActive(false);
         yield return new WaitForSeconds(1f);
 
-        bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
+        playerUnit.TakeDamage(enemyUnit.damage);
+        State currentState = playerUnit.getState();
 
         playerHUD.SetHP(playerUnit.currentHP);
 
         yield return new WaitForSeconds(1f);
 
-        if (isDead)
+        if (currentState == State.DEAD)
         {
+            SimplePool.Despawn(playerPrefab);
             state = BattleState.LOST;
             EndBattle();
-
         }
         else
         {

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum State { ALIVE, DEAD }
+
 public class Unit : MonoBehaviour
 {
 
@@ -13,14 +15,20 @@ public class Unit : MonoBehaviour
     public int maxHP;
     public int currentHP;
 
-    public bool TakeDamage(int dmg)
+    public Animator ani;
+
+    public State state = State.ALIVE;
+
+    public void TakeDamage(int dmg)
     {
         currentHP -= dmg;
+        ani.SetTrigger("Take hit");
 
         if (currentHP <= 0)
-            return true;
-        else
-            return false;
+        {
+            ani.SetBool("isDeath", true);
+            state = State.DEAD;
+        }
     }
 
     public bool GainHealth(int hp)
@@ -31,5 +39,10 @@ public class Unit : MonoBehaviour
             return true;
         else
             return false;
+    }
+
+    public State getState()
+    {
+        return state;
     }
 }
