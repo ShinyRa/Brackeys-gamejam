@@ -1,4 +1,5 @@
-﻿{
+{
+    "editor.formatOnSave": false,
     "files.exclude":
     {
         "**/.DS_Store":true,
