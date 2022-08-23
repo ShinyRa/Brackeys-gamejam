@@ -7,6 +7,7 @@ Our turn-based combat game developed in C# using [the Unity engine](https://unit
 - Tijs de Graaff
 - Quincy van der Sluis
 - Scott Reingoud
+- Auke Steenman
 
 ## Installation guide
 To open this game in Unity you'll need the following prerequisites:
