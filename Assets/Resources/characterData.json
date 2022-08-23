@@ -1,0 +1,36 @@
+{
+    "units": [
+        {
+            "name": "Evil Wizard",
+            "prefabName": "Player",
+            "health": 40,
+            "actions": [
+                {
+                    "name": "Slam",
+                    "animationClip": "slamAttack",
+                    "successRate": 100,
+                    "healthModifier": -10,
+                    "margin": 2
+                },
+                {
+                    "name": "Wave",
+                    "animationClip": "waveAttack",
+                    "successRate": 100,
+                    "healthModifier": -10
+                },
+                {
+                    "name": "Heal",
+                    "animationClip": "waveAttack",
+                    "successRate": 100,
+                    "healthModifier": 20
+                },
+                {
+                    "name": "Dodge",
+                    "animationClip": "dodge",
+                    "successRate": 80,
+                    "healthModifier": 0
+                }
+            ]
+        }
+    ]
+}
