@@ -21,8 +21,8 @@ public class BattleSystem : MonoBehaviour
 
     public GameObject hotBar;
 
-    Unit playerUnit;
-    Unit enemyUnit;
+    BaseUnit playerUnit;
+    BaseUnit enemyUnit;
 
     public BattleHUD playerHUD;
     public BattleHUD enemyHUD;
@@ -56,8 +56,8 @@ public class BattleSystem : MonoBehaviour
 
         enemyGO = SimplePool.Spawn(enemyLibrary[level], enemyBattleStation);
 
-        playerUnit = playerGO.GetComponent<Unit>();
-        enemyUnit = enemyGO.GetComponent<Unit>();
+        playerUnit = playerGO.GetComponent<BaseUnit>();
+        enemyUnit = enemyGO.GetComponent<BaseUnit>();
 
         playerHUD.SetHUD(playerUnit);
         enemyHUD.SetHUD(enemyUnit);

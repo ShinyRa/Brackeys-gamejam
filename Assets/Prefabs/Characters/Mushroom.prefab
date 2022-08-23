@@ -60,8 +60,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -1848290515, guid: baa04208c882611478b028f1ab36767f, type: 3}
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
+      propertyPath: ani
+      value: 
+      objectReference: {fileID: 1585415362587002527}
+    - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
+      propertyPath: maxHP
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: unitName
       value: Toad
       objectReference: {fileID: 0}
+    - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
+      propertyPath: currentHP
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
+--- !u!95 &1585415362587002527 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8598651831874574246, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
+  m_PrefabInstance: {fileID: 7013242166706655545}
+  m_PrefabAsset: {fileID: 0}

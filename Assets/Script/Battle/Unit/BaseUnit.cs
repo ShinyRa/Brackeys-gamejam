@@ -6,7 +6,7 @@ using TMPro;
 public enum State { ALIVE, POISIONED, DEAD }
 
 
-public class Unit : MonoBehaviour
+public class BaseUnit : MonoBehaviour
 {
 
     // public GameObject tagPrefab;
