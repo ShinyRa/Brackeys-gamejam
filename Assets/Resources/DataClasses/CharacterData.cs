@@ -1,6 +1,6 @@
-
+using System.Collections.Generic;
 [System.Serializable]
 public class CharacterData
 {
-    public UnitData[] units;
+    public List<UnitData> units;
 }

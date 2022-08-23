@@ -1,182 +1,206 @@
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 using TMPro;
 using Random = System.Random;
 
-// public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
-
 public class BattleSystem : MonoBehaviour
 {
+    /**
+     * JSon Character Data reader
+     */
     public CharacterDataReader reader;
-    // public GameObject playerPrefab;
-    // public GameObject mushroomPrefab;
-    // public GameObject goblinPrefab;
-    // public GameObject evilWizard1Prefab;
-    // public GameObject skeletonPrefab;
 
-    // public GameObject playerGO;
-    // public GameObject enemyGO;
+    /**
+     * Prefab references
+     */
+    public GameObject playerPrefab;
+    public List<GameObject> enemyPrefabs;
 
-    // public Transform playerBattleStation;
-    // public Transform enemyBattleStation;
+    /**
+     * Battlestation locations to spawn player / enemies
+     */
+    public Transform playerBattleStation;
+    public Transform enemyBattleStation;
 
-    // public GameObject hotBar;
+    /**
+     * Player menu to choose spells
+     */
+    public GameObject spellBook;
 
-    // BaseUnit playerUnit;
-    // BaseUnit enemyUnit;
+    /**
+     * Unit datastructure
+     */
+    BaseUnit playerUnit;
+    BaseUnit enemyUnit;
 
-    // public BattleHUD playerHUD;
-    // public BattleHUD enemyHUD;
+    /**
+     * Player / Enemey references
+     */
+    public GameObject playerGO;
+    public GameObject enemyGO;
 
-    // public BattleState state;
+    /**
+     * Battle HUD references
+     */
+    public BattleHUD playerHUD;
+    public BattleHUD enemyHUD;
 
-    // private int level = 0;
+    /**
+     * State of battle
+     */
+    public BattleStateEnum state = BattleStateEnum.START;
 
-    // public GameObject[] enemyLibrary;
-
-    // Start is called before the first frame update
+    private int level = 0;
 
     private readonly string CHARACTER_DATA_FILE = "characterData";
+
     void Start()
     {
-        TextAsset characterData = Resources.Load(CHARACTER_DATA_FILE) as TextAsset;
+        this.ReadCharacterData();
 
-        this.reader = new CharacterDataReader(characterData);
-        Debug.Log(this.reader.GetList().units[0].name);
-        Debug.Log(this.reader.GetList().units[0].prefabName);
-        Debug.Log("Actions: ");
-        for (int i = 0; i < this.reader.GetList().units[0].actions.Length; i++)
-        {
-            Debug.Log(this.reader.GetList().units[0].actions[i].name);
-            Debug.Log(this.reader.GetList().units[0].actions[i].healthModifier);
-            Debug.Log(this.reader.GetList().units[0].actions[i].margin);
-            Debug.Log(this.reader.GetList().units[0].actions[i].successRate);
-        }
-
-        // state = BattleState.START;
-        // hotBar.SetActive(false);
-        // playerGO = SimplePool.Spawn(playerPrefab, playerBattleStation);
-        // StartCoroutine(SetupBattle(level));
+        spellBook.SetActive(false);
+        playerGO = SimplePool.Spawn(playerPrefab, playerBattleStation);
+        StartCoroutine(SetupBattle(level));
     }
 
-    // void NextLevel()
-    // {
-    //     state = BattleState.START;
-    //     hotBar.SetActive(false);
-    //     enemyUnit.GainFullHealth();
-    //     StartCoroutine(SetupBattle(level));
-    // }
+    /**
+     * Read Json character data from location
+     */ 
+    private void ReadCharacterData() {
+        TextAsset characterData = Resources.Load(CHARACTER_DATA_FILE) as TextAsset;
+        this.reader = new CharacterDataReader(characterData);
+        CharacterData data = this.reader.GetList();
+        // this.characterData = this.reader.GetList();
 
-    // IEnumerator SetupBattle(int level)
-    // {
-    //     enemyLibrary = new GameObject[] { mushroomPrefab, goblinPrefab, skeletonPrefab, evilWizard1Prefab };
+        // this.characterData.units
 
-    //     enemyGO = SimplePool.Spawn(enemyLibrary[level], enemyBattleStation);
+        // Action[] actions = {new Action(), new Action(), new Action(), new Action()};
+        // spellBook.SetActions(actions);
+        for (int i = 0; i < data.units.Count; i++)
+        {
+            // Debug.Log("Assets/Prefabs/Characters/" + data.units[i].prefabName);
+            // GameObject test = Instantiate(Resources.Load("Assets/Prefabs/Characters/" + data.units[i].prefabName, typeof(GameObject))) as GameObject;
+            // this.unitPrefabs.Add();
+        }       
+    } 
 
-    //     playerUnit = playerGO.GetComponent<BaseUnit>();
-    //     enemyUnit = enemyGO.GetComponent<BaseUnit>();
+    void NextLevel()
+    {
+        state = BattleStateEnum.START;
+        spellBook.SetActive(false);
+        enemyUnit.GainFullHealth();
+        StartCoroutine(SetupBattle(level));
+    }
 
-    //     playerHUD.SetHUD(playerUnit);
-    //     enemyHUD.SetHUD(enemyUnit);
+    IEnumerator SetupBattle(int level)
+    {
+        enemyGO = SimplePool.Spawn(enemyPrefabs[level], enemyBattleStation);
 
-    //     yield return new WaitForSeconds(2f);
+        playerUnit = playerGO.GetComponent<BaseUnit>();
+        enemyUnit = enemyGO.GetComponent<BaseUnit>();
 
-    //     state = BattleState.PLAYERTURN;
-    //     PlayerTurn();
-    // }
+        playerHUD.SetHUD(playerUnit);
+        enemyHUD.SetHUD(enemyUnit);
 
-    // void PlayerTurn()
-    // {
-    //     hotBar.SetActive(true);
-    // }
+        yield return new WaitForSeconds(1f);
 
-    // public void OnDodge()
-    // {
-    //     Debug.Log("Dodging");
-    // }
+        state = BattleStateEnum.PLAYERTURN;
+        PlayerTurn();
+    }
 
-    // IEnumerator PlayerAttack()
-    // {
-    //     enemyUnit.TakeDamage(playerUnit.damage);
-    //     State currentState = enemyUnit.getState();
+    void PlayerTurn()
+    {
+        spellBook.SetActive(true);
+    }
 
-    //     enemyHUD.SetHP(enemyUnit.currentHP);
+    public void OnDodge()
+    {
+        Debug.Log("Dodging");
+    }
 
-    //     yield return new WaitForSeconds(2f);
+    IEnumerator PlayerAttack()
+    {
+        enemyUnit.TakeDamage(playerUnit.damage);
+        State currentState = enemyUnit.getState();
 
-    //     if (currentState == State.DEAD)
-    //     {
-    //         SimplePool.Despawn(enemyGO);
-    //         state = BattleState.WON;
-    //         EndBattle();
-    //     }
-    //     else
-    //     {
-    //         state = BattleState.ENEMYTURN;
-    //         StartCoroutine(EnemyTurn());
-    //     }
-    // }
+        enemyHUD.SetHP(enemyUnit.currentHP);
 
-    // public void OnAttackButton(string attackType)
-    // {
-    //     if (state != BattleState.PLAYERTURN)
-    //         return;
-    //     playerUnit.DealAttack(attackType);
-    //     hotBar.SetActive(false);
-    //     StartCoroutine(PlayerAttack());
-    // }
+        yield return new WaitForSeconds(2f);
 
-    // public void OnHealButton(int amountHeal)
-    // {
-    //     if (state != BattleState.PLAYERTURN)
-    //         return;
+        if (currentState == State.DEAD)
+        {
+            SimplePool.Despawn(enemyGO);
+            state = BattleStateEnum.WON;
+            EndBattle();
+        }
+        else
+        {
+            state = BattleStateEnum.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
+        }
+    }
 
-    //     playerUnit.GainHealth(amountHeal);
-    //     playerHUD.SetHP(playerUnit.currentHP);
+    public void OnAttackButton(string attackType)
+    {
+        if (state != BattleStateEnum.PLAYERTURN)
+            return;
+        playerUnit.DealAttack(attackType);
+        spellBook.SetActive(false);
+        StartCoroutine(PlayerAttack());
+    }
 
-    //     hotBar.SetActive(false);
-    //     StartCoroutine(EnemyTurn());
-    // }
+    public void OnHealButton(int amountHeal)
+    {
+        if (state != BattleStateEnum.PLAYERTURN)
+            return;
 
-    // IEnumerator EnemyTurn()
-    // {
-    //     hotBar.SetActive(false);
-    //     yield return new WaitForSeconds(1f);
+        playerUnit.GainHealth(amountHeal);
+        playerHUD.SetHP(playerUnit.currentHP);
 
-    //     enemyUnit.DealAttack("basicAttack");
+        spellBook.SetActive(false);
+        StartCoroutine(EnemyTurn());
+    }
 
-    //     playerUnit.TakeDamage(enemyUnit.damage);
-    //     State currentState = playerUnit.getState();
+    IEnumerator EnemyTurn()
+    {
+        spellBook.SetActive(false);
+        yield return new WaitForSeconds(1f);
 
-    //     playerHUD.SetHP(playerUnit.currentHP);
+        enemyUnit.DealAttack("basicAttack");
 
-    //     yield return new WaitForSeconds(1f);
+        playerUnit.TakeDamage(enemyUnit.damage);
+        State currentState = playerUnit.getState();
 
-    //     if (currentState == State.DEAD)
-    //     {
-    //         state = BattleState.LOST;
-    //         EndBattle();
-    //     }
-    //     else
-    //     {
-    //         state = BattleState.PLAYERTURN;
-    //         PlayerTurn();
-    //     }
-    // }
+        playerHUD.SetHP(playerUnit.currentHP);
 
-    // void EndBattle()
-    // {
-    //     Random rnd = new Random();
-    //     if (state == BattleState.WON)
-    //     {
-    //         Debug.Log("You WON");
-    //         level = rnd.Next(0, enemyLibrary.Length);
-    //         NextLevel();
-    //     }
-    //     else if (state == BattleState.LOST)
-    //     {
-    //         Debug.Log("You LOST");
-    //     }
+        yield return new WaitForSeconds(1f);
 
-    // }
+        if (currentState == State.DEAD)
+        {
+            state = BattleStateEnum.LOST;
+            EndBattle();
+        }
+        else
+        {
+            state = BattleStateEnum.PLAYERTURN;
+            PlayerTurn();
+        }
+    }
+
+    void EndBattle()
+    {
+        Random rnd = new Random();
+        if (state == BattleStateEnum.WON)
+        {
+            Debug.Log("You WON");
+            // level = rnd.Next(0, enemyLibrary.Length);
+            NextLevel();
+        }
+        else if (state == BattleStateEnum.LOST)
+        {
+            Debug.Log("You LOST");
+        }
+
+    }
 }
