@@ -12,6 +12,7 @@ public class BattleSystem : MonoBehaviour
     public GameObject mushroomPrefab;
     public GameObject goblinPrefab;
     public GameObject evilWizard1Prefab;
+    public GameObject skeletonPrefab;
 
     public GameObject playerGO;
     public GameObject enemyGO;
@@ -52,7 +53,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator SetupBattle(int level)
     {
-        enemyLibrary = new GameObject[] { mushroomPrefab, goblinPrefab, evilWizard1Prefab };
+        enemyLibrary = new GameObject[] { mushroomPrefab, goblinPrefab, skeletonPrefab, evilWizard1Prefab };
 
         enemyGO = SimplePool.Spawn(enemyLibrary[level], enemyBattleStation);
 

@@ -51,7 +51,7 @@ public class Unit : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         currentHP -= dmg;
-        ani.SetTrigger("Take hit");
+        ani.SetTrigger("takeHit");
 
         if (currentHP <= 0)
         {

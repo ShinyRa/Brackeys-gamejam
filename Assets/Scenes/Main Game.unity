@@ -1141,6 +1141,7 @@ MonoBehaviour:
   mushroomPrefab: {fileID: 8771560446918830829, guid: 620f4209834961b4aaf933f8d2a2cb95, type: 3}
   goblinPrefab: {fileID: 6914982703461070952, guid: ccc7df2be91c1794a955d98f72928134, type: 3}
   evilWizard1Prefab: {fileID: 249807215425239347, guid: 30196c25f987dde489f1cdc9bc06046a, type: 3}
+  skeletonPrefab: {fileID: 0}
   playerGO: {fileID: 0}
   enemyGO: {fileID: 0}
   playerBattleStation: {fileID: 1692013849}

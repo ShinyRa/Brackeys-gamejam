@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &5122890166169863100
+--- !u!1001 &6260631466168632630
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1796616669014129620, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: m_Name
-      value: Goblin
+      value: Skeleton
       objectReference: {fileID: 0}
     - target: {fileID: 2670108895039978110, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: m_RootOrder
@@ -74,11 +74,11 @@ PrefabInstance:
     - target: {fileID: 5976948135747727413, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 285352067, guid: 26d3be952d55d4744961d820ee505554, type: 3}
+      objectReference: {fileID: 911063127, guid: d0329fc809ad5464b8d0b4cc7e1ac278, type: 3}
     - target: {fileID: 8598651831874574246, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: bdc8c85aefd6830449845fbe65b4beba, type: 2}
+      objectReference: {fileID: 9100000, guid: 133b94a748c4eb749b966af2130191f9, type: 2}
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: maxHP
       value: 7
@@ -89,7 +89,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: unitName
-      value: Goblin
+      value: Skeleton
       objectReference: {fileID: 0}
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: currentHP
