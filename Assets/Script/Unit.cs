@@ -35,11 +35,12 @@ public class Unit : MonoBehaviour
 
     void Start()
     {
-        // UnitTagGO = Instantiate(tagPrefab);
-        // playerTag = UnitTagGO.GetComponent<PlayerTagScript>();
-        // playerTag.parentObject = gameObject;
-        // text.text = unitName;
-        // Debug.Log(text);
+
+    }
+
+    public void GainFullHealth()
+    {
+        currentHP = maxHP;
     }
 
     public void DealAttack(string attackType)
@@ -69,10 +70,5 @@ public class Unit : MonoBehaviour
         {
             currentHP = maxHP;
         }
-    }
-
-    void Update()
-    {
-        Debug.Log(transform.position);
     }
 }

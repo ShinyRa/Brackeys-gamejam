@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6305281192331590588
+--- !u!1 &249807215425239347
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3724841797054501792}
-  - component: {fileID: 4800467286616596817}
-  - component: {fileID: 7437766740258115221}
-  - component: {fileID: 2356737596544740339}
+  - component: {fileID: 7441897537639158063}
+  - component: {fileID: 1614833007414895582}
+  - component: {fileID: 3733454343465913370}
+  - component: {fileID: 8377669316018661756}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Evil Wizard 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3724841797054501792
+--- !u!4 &7441897537639158063
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6305281192331590588}
+  m_GameObject: {fileID: 249807215425239347}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 4, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 2288577291186277837}
+  - {fileID: 5419252481669402434}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &4800467286616596817
+--- !u!212 &1614833007414895582
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6305281192331590588}
+  m_GameObject: {fileID: 249807215425239347}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 1621431561, guid: 7067aa3deb7318e4b8bfe98fb5bb36fd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 2.5, y: 2.5}
@@ -87,14 +87,14 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &7437766740258115221
+--- !u!95 &3733454343465913370
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6305281192331590588}
+  m_GameObject: {fileID: 249807215425239347}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: efc627d7019800b4194d05d75b881805, type: 2}
@@ -107,37 +107,37 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2356737596544740339
+--- !u!114 &8377669316018661756
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6305281192331590588}
+  m_GameObject: {fileID: 249807215425239347}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 447787179da74094fab6a2d5c8c497c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitName: Evil Wizard 3
-  unitLevel: 2
-  damage: 2
-  maxHP: 8
-  currentHP: 8
-  ani: {fileID: 7437766740258115221}
+  unitName: Evil Wizard 1
+  unitLevel: 3
+  damage: 3
+  maxHP: 12
+  currentHP: 12
+  ani: {fileID: 3733454343465913370}
   attackTypes: []
   state: 0
---- !u!1001 &7414791355722992880
+--- !u!1001 &3607670219392257663
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 3724841797054501792}
+    m_TransformParent: {fileID: 7441897537639158063}
     m_Modifications:
     - target: {fileID: 4669740125402057076, guid: 74ff610a16593d74b9da659febf007f4, type: 3}
       propertyPath: parentObject
       value: 
-      objectReference: {fileID: 6305281192331590588}
+      objectReference: {fileID: 249807215425239347}
     - target: {fileID: 6172924408313209477, guid: 74ff610a16593d74b9da659febf007f4, type: 3}
       propertyPath: m_text
       value: 
@@ -232,8 +232,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 74ff610a16593d74b9da659febf007f4, type: 3}
---- !u!224 &2288577291186277837 stripped
+--- !u!224 &5419252481669402434 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8729112526923399485, guid: 74ff610a16593d74b9da659febf007f4, type: 3}
-  m_PrefabInstance: {fileID: 7414791355722992880}
+  m_PrefabInstance: {fileID: 3607670219392257663}
   m_PrefabAsset: {fileID: 0}

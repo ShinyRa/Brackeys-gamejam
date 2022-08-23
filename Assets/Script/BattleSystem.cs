@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Random = System.Random;
 
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 
@@ -10,6 +11,7 @@ public class BattleSystem : MonoBehaviour
     public GameObject playerPrefab;
     public GameObject mushroomPrefab;
     public GameObject goblinPrefab;
+    public GameObject evilWizard1Prefab;
 
     public GameObject playerGO;
     public GameObject enemyGO;
@@ -27,7 +29,9 @@ public class BattleSystem : MonoBehaviour
 
     public BattleState state;
 
-    private int level = 1;
+    private int level = 0;
+
+    public GameObject[] enemyLibrary;
 
     // Start is called before the first frame update
     void Start()
@@ -42,22 +46,15 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.START;
         hotBar.SetActive(false);
+        enemyUnit.GainFullHealth();
         StartCoroutine(SetupBattle(level));
     }
 
     IEnumerator SetupBattle(int level)
     {
-        switch (level)
-        {
-            case 1:
-                enemyGO = SimplePool.Spawn(mushroomPrefab, enemyBattleStation);
-                break;
-            case 2:
-                enemyGO = SimplePool.Spawn(goblinPrefab, enemyBattleStation);
-                break;
-            default:
-                break;
-        }
+        enemyLibrary = new GameObject[] { mushroomPrefab, goblinPrefab, evilWizard1Prefab };
+
+        enemyGO = SimplePool.Spawn(enemyLibrary[level], enemyBattleStation);
 
         playerUnit = playerGO.GetComponent<Unit>();
         enemyUnit = enemyGO.GetComponent<Unit>();
@@ -74,6 +71,11 @@ public class BattleSystem : MonoBehaviour
     void PlayerTurn()
     {
         hotBar.SetActive(true);
+    }
+
+    public void OnDodge()
+    {
+        Debug.Log("Dodging");
     }
 
     IEnumerator PlayerAttack()
@@ -112,7 +114,7 @@ public class BattleSystem : MonoBehaviour
         if (state != BattleState.PLAYERTURN)
             return;
 
-        playerUnit.GainHealth(1);
+        playerUnit.GainHealth(3);
         playerHUD.SetHP(playerUnit.currentHP);
 
         hotBar.SetActive(false);
@@ -147,10 +149,11 @@ public class BattleSystem : MonoBehaviour
 
     void EndBattle()
     {
+        Random rnd = new Random();
         if (state == BattleState.WON)
         {
             Debug.Log("You WON");
-            level++;
+            level = rnd.Next(0, enemyLibrary.Length);
             NextLevel();
         }
         else if (state == BattleState.LOST)
