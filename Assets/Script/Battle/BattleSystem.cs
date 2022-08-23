@@ -110,12 +110,12 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(PlayerAttack());
     }
 
-    public void OnHealButton()
+    public void OnHealButton(int amountHeal)
     {
         if (state != BattleState.PLAYERTURN)
             return;
 
-        playerUnit.GainHealth(3);
+        playerUnit.GainHealth(amountHeal);
         playerHUD.SetHP(playerUnit.currentHP);
 
         hotBar.SetActive(false);
