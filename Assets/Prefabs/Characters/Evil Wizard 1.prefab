@@ -116,14 +116,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 249807215425239347}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 447787179da74094fab6a2d5c8c497c7, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e9cb474c8f7cae4da3417138942f431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitName: Evil Wizard 1
+  unitName: 
   unitLevel: 3
   damage: 3
-  maxHP: 12
-  currentHP: 12
+  maxHP: 8
+  currentHP: 8
   ani: {fileID: 3733454343465913370}
   attackTypes: []
   state: 0

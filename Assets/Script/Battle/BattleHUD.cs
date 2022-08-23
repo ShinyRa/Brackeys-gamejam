@@ -11,7 +11,7 @@ public class BattleHUD : MonoBehaviour
     public TextMeshProUGUI levelText;
     public Slider hpSlider;
 
-    public void SetHUD(Unit unit)
+    public void SetHUD(BaseUnit unit)
     {
         nameTag.text = unit.unitName;
         levelText.text = "Lvl " + unit.unitLevel;

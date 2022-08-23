@@ -12,6 +12,7 @@ public class BattleSystem : MonoBehaviour
     public GameObject mushroomPrefab;
     public GameObject goblinPrefab;
     public GameObject evilWizard1Prefab;
+    public GameObject skeletonPrefab;
 
     public GameObject playerGO;
     public GameObject enemyGO;
@@ -21,8 +22,8 @@ public class BattleSystem : MonoBehaviour
 
     public GameObject hotBar;
 
-    Unit playerUnit;
-    Unit enemyUnit;
+    BaseUnit playerUnit;
+    BaseUnit enemyUnit;
 
     public BattleHUD playerHUD;
     public BattleHUD enemyHUD;
@@ -52,12 +53,12 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator SetupBattle(int level)
     {
-        enemyLibrary = new GameObject[] { mushroomPrefab, goblinPrefab, evilWizard1Prefab };
+        enemyLibrary = new GameObject[] { mushroomPrefab, goblinPrefab, skeletonPrefab, evilWizard1Prefab };
 
         enemyGO = SimplePool.Spawn(enemyLibrary[level], enemyBattleStation);
 
-        playerUnit = playerGO.GetComponent<Unit>();
-        enemyUnit = enemyGO.GetComponent<Unit>();
+        playerUnit = playerGO.GetComponent<BaseUnit>();
+        enemyUnit = enemyGO.GetComponent<BaseUnit>();
 
         playerHUD.SetHUD(playerUnit);
         enemyHUD.SetHUD(enemyUnit);
