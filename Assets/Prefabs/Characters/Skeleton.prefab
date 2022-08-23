@@ -80,6 +80,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9100000, guid: 133b94a748c4eb749b966af2130191f9, type: 2}
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
+      propertyPath: ani
+      value: 
+      objectReference: {fileID: 2429330729414955664}
+    - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: maxHP
       value: 7
       objectReference: {fileID: 0}
@@ -101,3 +105,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
+--- !u!95 &2429330729414955664 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8598651831874574246, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
+  m_PrefabInstance: {fileID: 6260631466168632630}
+  m_PrefabAsset: {fileID: 0}

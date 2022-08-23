@@ -65,7 +65,11 @@ PrefabInstance:
       objectReference: {fileID: 1585415362587002527}
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: maxHP
-      value: 20
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
+      propertyPath: damage
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: unitName
@@ -73,7 +77,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: currentHP
-      value: 20
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
+      propertyPath: unitLevel
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
