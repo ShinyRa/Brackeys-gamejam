@@ -92,6 +92,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
+      propertyPath: unitIcon
+      value: 
+      objectReference: {fileID: 285352067, guid: 26d3be952d55d4744961d820ee505554, type: 3}
+    - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: unitName
       value: Goblin
       objectReference: {fileID: 0}

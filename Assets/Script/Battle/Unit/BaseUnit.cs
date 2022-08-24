@@ -19,6 +19,7 @@ public class BaseUnit : MonoBehaviour
 
     public string unitName;
     public int unitLevel;
+    public Sprite unitIcon;
 
     public int damage;
 

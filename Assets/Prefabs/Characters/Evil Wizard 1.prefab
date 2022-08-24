@@ -121,6 +121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: 
   unitLevel: 3
+  unitIcon: {fileID: 1621431561, guid: 7067aa3deb7318e4b8bfe98fb5bb36fd, type: 3}
   damage: 3
   maxHP: 8
   currentHP: 8
