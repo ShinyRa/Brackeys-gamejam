@@ -124,7 +124,7 @@ public class BattleSystem : MonoBehaviour
     IEnumerator EnemyTurn()
     {
         hotBar.SetActive(false);
-
+        yield return new WaitForSeconds(2f);
         enemyUnit.DealAttack("basicAttack");
         yield return new WaitForSeconds(1f);
 
