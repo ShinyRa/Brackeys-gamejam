@@ -94,10 +94,10 @@ PrefabInstance:
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: unitIcon
       value: 
-      objectReference: {fileID: 911063127, guid: d0329fc809ad5464b8d0b4cc7e1ac278, type: 3}
+      objectReference: {fileID: 911063127, guid: 8e34d2ba89645db478db433cdfe21477, type: 3}
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: unitName
-      value: Skeleton
+      value: Ton
       objectReference: {fileID: 0}
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: currentHP

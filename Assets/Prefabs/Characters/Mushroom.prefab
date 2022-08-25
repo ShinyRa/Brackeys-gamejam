@@ -74,10 +74,10 @@ PrefabInstance:
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: unitIcon
       value: 
-      objectReference: {fileID: -1848290515, guid: baa04208c882611478b028f1ab36767f, type: 3}
+      objectReference: {fileID: -1848290515, guid: 2236bd3f5664b524a809ea038e73a370, type: 3}
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: unitName
-      value: Toad
+      value: Shroom
       objectReference: {fileID: 0}
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: currentHP

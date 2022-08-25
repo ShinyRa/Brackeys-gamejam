@@ -94,10 +94,10 @@ PrefabInstance:
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: unitIcon
       value: 
-      objectReference: {fileID: 285352067, guid: 26d3be952d55d4744961d820ee505554, type: 3}
+      objectReference: {fileID: -574336374, guid: de4096a8880b5194fa12f879bd3ea0f5, type: 3}
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: unitName
-      value: Goblin
+      value: Lin
       objectReference: {fileID: 0}
     - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
       propertyPath: currentHP
