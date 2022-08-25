@@ -34,11 +34,6 @@ public class BaseUnit : MonoBehaviour
 
     public State getState() { return state; }
 
-    void Start()
-    {
-
-    }
-
     public void GainFullHealth()
     {
         currentHP = maxHP;
@@ -51,8 +46,8 @@ public class BaseUnit : MonoBehaviour
 
     public void TakeDamage(int dmg)
     {
-        currentHP -= dmg;
         ani.SetTrigger("takeHit");
+        currentHP -= dmg;
 
         if (currentHP <= 0)
         {

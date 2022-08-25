@@ -81,15 +81,15 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PlayerAttack()
     {
+        yield return new WaitForSeconds(1f);
         enemyUnit.TakeDamage(playerUnit.damage);
         State currentState = enemyUnit.getState();
-
         enemyHUD.SetHP(enemyUnit.currentHP);
 
         yield return new WaitForSeconds(2f);
-
         if (currentState == State.DEAD)
         {
+            currentState = State.ALIVE;
             SimplePool.Despawn(enemyGO);
             state = BattleState.WON;
             EndBattle();
@@ -114,7 +114,6 @@ public class BattleSystem : MonoBehaviour
     {
         if (state != BattleState.PLAYERTURN)
             return;
-
         playerUnit.GainHealth(amountHeal);
         playerHUD.SetHP(playerUnit.currentHP);
 
@@ -125,9 +124,9 @@ public class BattleSystem : MonoBehaviour
     IEnumerator EnemyTurn()
     {
         hotBar.SetActive(false);
-        yield return new WaitForSeconds(1f);
 
         enemyUnit.DealAttack("basicAttack");
+        yield return new WaitForSeconds(1f);
 
         playerUnit.TakeDamage(enemyUnit.damage);
         State currentState = playerUnit.getState();
