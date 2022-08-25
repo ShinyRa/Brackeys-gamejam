@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Random = System.Random;
+using UnityEngine.SceneManagement;
 
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 
@@ -30,25 +31,23 @@ public class BattleSystem : MonoBehaviour
 
     public BattleState state;
 
-    private int level = 0;
+    private int currentLevel = 0;
+    private int totalLevels = 3;
 
     public GameObject[] enemyLibrary;
 
     // Start is called before the first frame update
     void Start()
     {
-        state = BattleState.START;
-        hotBar.SetActive(false);
         playerGO = SimplePool.Spawn(playerPrefab, playerBattleStation);
-        StartCoroutine(SetupBattle(level));
+        Restart();
     }
 
-    void NextLevel()
+    void Restart()
     {
         state = BattleState.START;
         hotBar.SetActive(false);
-        enemyUnit.GainFullHealth();
-        StartCoroutine(SetupBattle(level));
+        StartCoroutine(SetupBattle(currentLevel));
     }
 
     IEnumerator SetupBattle(int level)
@@ -74,19 +73,14 @@ public class BattleSystem : MonoBehaviour
         hotBar.SetActive(true);
     }
 
-    public void OnDodge()
-    {
-        Debug.Log("Dodging");
-    }
-
     IEnumerator PlayerAttack()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.2f);
         enemyUnit.TakeDamage(playerUnit.damage);
         State currentState = enemyUnit.getState();
         enemyHUD.SetHP(enemyUnit.currentHP);
-
         yield return new WaitForSeconds(2f);
+
         if (currentState == State.DEAD)
         {
             currentState = State.ALIVE;
@@ -123,16 +117,12 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator EnemyTurn()
     {
-        hotBar.SetActive(false);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
         enemyUnit.DealAttack("basicAttack");
-        yield return new WaitForSeconds(1f);
-
+        yield return new WaitForSeconds(0.5f);
         playerUnit.TakeDamage(enemyUnit.damage);
         State currentState = playerUnit.getState();
-
         playerHUD.SetHP(playerUnit.currentHP);
-
         yield return new WaitForSeconds(1f);
 
         if (currentState == State.DEAD)
@@ -149,17 +139,27 @@ public class BattleSystem : MonoBehaviour
 
     void EndBattle()
     {
-        Random rnd = new Random();
         if (state == BattleState.WON)
         {
             Debug.Log("You WON");
-            level = rnd.Next(0, enemyLibrary.Length);
-            NextLevel();
+            if (currentLevel == totalLevels)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+            }
+            currentLevel++;
+            enemyUnit.GainFullHealth();
+            Restart();
         }
         else if (state == BattleState.LOST)
         {
             Debug.Log("You LOST");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
+    }
 
+    private int Random(int min, int max)
+    {
+        Random rnd = new Random();
+        return rnd.Next(min, max);
     }
 }
