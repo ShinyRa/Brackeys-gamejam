@@ -78,6 +78,7 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         enemyUnit.TakeDamage(playerUnit.damage);
         State currentState = enemyUnit.getState();
+        yield return new WaitForSeconds(0.2f);
         enemyHUD.SetHP(enemyUnit.currentHP);
         yield return new WaitForSeconds(2f);
 
@@ -86,7 +87,7 @@ public class BattleSystem : MonoBehaviour
             currentState = State.ALIVE;
             SimplePool.Despawn(enemyGO);
             state = BattleState.WON;
-            EndBattle();
+            StartCoroutine(EndBattle());
         }
         else
         {
@@ -128,7 +129,7 @@ public class BattleSystem : MonoBehaviour
         if (currentState == State.DEAD)
         {
             state = BattleState.LOST;
-            EndBattle();
+            StartCoroutine(EndBattle());
         }
         else
         {
@@ -137,7 +138,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    void EndBattle()
+    IEnumerator EndBattle()
     {
         if (state == BattleState.WON)
         {
@@ -153,6 +154,9 @@ public class BattleSystem : MonoBehaviour
         else if (state == BattleState.LOST)
         {
             Debug.Log("You LOST");
+            yield return new WaitForSeconds(2f);
+            Destroy(playerGO);
+            Destroy(enemyGO);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public enum State { ALIVE, POISIONED, DEAD }
+public enum State { ALIVE, POISIONED, DEAD, WON }
 
 
 public class BaseUnit : MonoBehaviour
