@@ -120,9 +120,10 @@ public class BattleSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         enemyUnit.DealAttack("basicAttack");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
         playerUnit.TakeDamage(enemyUnit.damage);
         State currentState = playerUnit.getState();
+        yield return new WaitForSeconds(0.3f);
         playerHUD.SetHP(playerUnit.currentHP);
         yield return new WaitForSeconds(1f);
 
