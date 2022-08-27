@@ -123,9 +123,11 @@ MonoBehaviour:
   unitLevel: 2
   unitIcon: {fileID: 1621431561, guid: 7067aa3deb7318e4b8bfe98fb5bb36fd, type: 3}
   damage: 2
-  maxHP: 7
-  currentHP: 7
+  maxHP: 12
+  currentHP: 12
   ani: {fileID: 7437766740258115221}
+  projectileGO: {fileID: 0}
+  projectilePrefab: {fileID: 0}
   attackTypes: []
   state: 0
 --- !u!1001 &7414791355722992880

@@ -44,6 +44,10 @@ public class BaseUnit : MonoBehaviour
     public void DealAttack(string attackType)
     {
         ani.SetTrigger(attackType);
+        if(attackType == "waveAttack")
+        {
+            TakeDamage(2);
+        }
         if(attackType == "thirdAttack")
         {
             projectileGO = Instantiate(projectilePrefab);

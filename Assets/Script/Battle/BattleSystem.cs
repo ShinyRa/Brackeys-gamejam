@@ -55,6 +55,9 @@ public class BattleSystem : MonoBehaviour
     private int currentLevel = 0;
     private int totalLevels = 3;
 
+    private int amountOfDamage;
+    public GameObject healButton;
+
     private readonly string CHARACTER_DATA_FILE = "characterData";
 
     void Start()
@@ -92,6 +95,7 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleStateEnum.START;
         spellBook.SetActive(false);
+        healButton.SetActive(true);
         StartCoroutine(SetupBattle(currentLevel));
     }
 
@@ -116,11 +120,18 @@ public class BattleSystem : MonoBehaviour
         spellBook.SetActive(true);
     }
 
-    IEnumerator PlayerAttack()
+    IEnumerator PlayerAttack(string attackType)
     {
-        SoundManagerScript.PlaySound ("playerAttack");
+        // SoundManagerScript.PlaySound ("playerAttack");
         yield return new WaitForSeconds(0.2f);
-        enemyUnit.TakeDamage(playerUnit.damage);
+        if (attackType == "waveAttack")
+        {
+            enemyUnit.TakeDamage(playerUnit.damage + 3);
+        } else
+        {
+            enemyUnit.TakeDamage(playerUnit.damage);
+        }
+
         State currentState = enemyUnit.getState();
         yield return new WaitForSeconds(0.2f);
         enemyHUD.SetHP(enemyUnit.currentHP);
@@ -145,17 +156,18 @@ public class BattleSystem : MonoBehaviour
         if (state != BattleStateEnum.PLAYERTURN)
             return;
         playerUnit.DealAttack(attackType);
+        playerHUD.SetHP(playerUnit.currentHP);
         spellBook.SetActive(false);
-        StartCoroutine(PlayerAttack());
+        StartCoroutine(PlayerAttack(attackType));
     }
 
     public void OnHealButton(int amountHeal)
     {
         if (state != BattleStateEnum.PLAYERTURN)
             return;
-        playerUnit.GainHealth(amountHeal);
+        playerUnit.GainFullHealth();
         playerHUD.SetHP(playerUnit.currentHP);
-
+        healButton.SetActive(false);
         spellBook.SetActive(false);
         StartCoroutine(EnemyTurn());
     }
@@ -163,12 +175,41 @@ public class BattleSystem : MonoBehaviour
     IEnumerator EnemyTurn()
     {
         yield return new WaitForSeconds(0.5f);
-        enemyUnit.DealAttack("thirdAttack");
-        yield return new WaitForSeconds(0.3f);
-        playerUnit.TakeDamage(enemyUnit.damage);
+        Debug.Log(enemyUnit.name);
+        if (enemyUnit.name == "Evil Wizard 1(Clone)")
+        {
+            string randomdAttack = getEvilAttack(Random(0,2));
+            Debug.Log("YES");
+             if (randomdAttack == "slamAttack") {
+                amountOfDamage = enemyUnit.damage;
+            } else if (randomdAttack == "waveAttack"){
+                amountOfDamage = enemyUnit.damage + 2;
+            }
+            enemyUnit.DealAttack(randomdAttack);
+            enemyHUD.SetHP(enemyUnit.currentHP);
+            
+        } else {
+            string randomdAttack = getAttack(Random(0,3));
+            enemyUnit.DealAttack(randomdAttack);
+
+            yield return new WaitForSeconds(0.3f);
+
+            if (randomdAttack == "basicAttack") {
+                amountOfDamage = enemyUnit.damage + 1;
+            } else if (randomdAttack == "secondAttack"){
+                amountOfDamage = enemyUnit.damage + 2;
+            } else if (randomdAttack == "thirdAttack"){
+                amountOfDamage = enemyUnit.damage + 3;
+            }
+        }
+        
+        playerUnit.TakeDamage(amountOfDamage);
         State currentState = playerUnit.getState();
+
         yield return new WaitForSeconds(0.3f);
+
         playerHUD.SetHP(playerUnit.currentHP);
+
         yield return new WaitForSeconds(1f);
 
         if (currentState == State.DEAD)
@@ -183,6 +224,34 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    private string getAttack(int randomint)
+    {
+        switch (randomint)
+        {
+            case 0:
+            return "basicAttack";
+            case 1:
+            return "secondAttack";
+            case 2:
+            return "thirdAttack";
+            default:
+            return "basicAttack";
+        }
+    }
+
+    private string getEvilAttack(int randomint)
+    {
+        switch (randomint)
+        {
+            case 0:
+            return "slamAttack";
+            case 1:
+            return "waveAttack";
+            default:
+            return "slamAttack";
+        }
+    }
+
     IEnumerator EndBattle()
     {
         if (state == BattleStateEnum.WON)
@@ -191,8 +260,9 @@ public class BattleSystem : MonoBehaviour
             if (currentLevel == totalLevels)
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+            } else {
+                currentLevel++;
             }
-            currentLevel++;
             enemyUnit.GainFullHealth();
             Restart();
         }
