@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public enum State { ALIVE, POISIONED, DEAD }
+public enum State { ALIVE, POISIONED, DEAD, WON }
 
 
 public class BaseUnit : MonoBehaviour
@@ -19,6 +19,7 @@ public class BaseUnit : MonoBehaviour
 
     public string unitName;
     public int unitLevel;
+    public Sprite unitIcon;
 
     public int damage;
 
@@ -33,11 +34,6 @@ public class BaseUnit : MonoBehaviour
 
     public State getState() { return state; }
 
-    void Start()
-    {
-
-    }
-
     public void GainFullHealth()
     {
         currentHP = maxHP;
@@ -50,8 +46,8 @@ public class BaseUnit : MonoBehaviour
 
     public void TakeDamage(int dmg)
     {
-        currentHP -= dmg;
         ani.SetTrigger("takeHit");
+        currentHP -= dmg;
 
         if (currentHP <= 0)
         {

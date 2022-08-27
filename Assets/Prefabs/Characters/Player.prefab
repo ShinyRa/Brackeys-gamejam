@@ -119,8 +119,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e9cb474c8f7cae4da3417138942f431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitName: Player
+  unitName: Evil Wizard 2
   unitLevel: 2
+  unitIcon: {fileID: 1621431561, guid: 7067aa3deb7318e4b8bfe98fb5bb36fd, type: 3}
   damage: 2
   maxHP: 7
   currentHP: 7
