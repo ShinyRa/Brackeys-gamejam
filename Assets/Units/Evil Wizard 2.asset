@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e9cb474c8f7cae4da3417138942f431, type: 3}
+  m_Name: Evil Wizard 2
+  m_EditorClassIdentifier: 
+  unitName: Evil Wizard 2
+  prefab: {fileID: 6305281192331590588, guid: eb4a2222d22e94c4997095663d6ec270, type: 3}
+  health: 40
+  ani: {fileID: 9100000, guid: efc627d7019800b4194d05d75b881805, type: 2}
+  actions:
+  - {fileID: 11400000, guid: ee0809908fd936142ae979cabbfdf706, type: 2}
+  - {fileID: 11400000, guid: 3904cb828737c904dba2ff844b504bc9, type: 2}
+  - {fileID: 11400000, guid: 5efce69fe309dc6499af923bd01f624b, type: 2}
+  state: 2
+  damage: 0

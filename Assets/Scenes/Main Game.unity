@@ -362,12 +362,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 900f10a02b76d81479a788a529eeb253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 6305281192331590588, guid: eb4a2222d22e94c4997095663d6ec270, type: 3}
-  enemyPrefabs:
-  - {fileID: 5624123414139420386, guid: 2a9486bee7b7cbb4db70672146d60938, type: 3}
-  - {fileID: 8771560446918830829, guid: 620f4209834961b4aaf933f8d2a2cb95, type: 3}
-  - {fileID: 6914982703461070952, guid: ccc7df2be91c1794a955d98f72928134, type: 3}
-  - {fileID: 249807215425239347, guid: 30196c25f987dde489f1cdc9bc06046a, type: 3}
+  playerUnit: {fileID: 11400000, guid: 93ed7e28a1ff31c43803f8f6fd92af75, type: 2}
+  enemyUnits:
+  - {fileID: 11400000, guid: 9c0067a94f67d9a41823539eeed9843a, type: 2}
   playerBattleStation: {fileID: 1692013849}
   enemyBattleStation: {fileID: 1882354206}
   spellBook: {fileID: 858543561}
@@ -1634,7 +1631,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameTag: {fileID: 784858966}
-  levelText: {fileID: 995705795}
   hpSlider: {fileID: 1993301202}
   unitIcon: {fileID: 451220317}
 --- !u!4 &834254813
@@ -3341,7 +3337,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameTag: {fileID: 1789563521}
-  levelText: {fileID: 1179680456}
   hpSlider: {fileID: 424833943}
   unitIcon: {fileID: 1355189971}
 --- !u!1 &1993301201

@@ -6,20 +6,10 @@ using UnityEngine.SceneManagement;
 public class BattleSystem : MonoBehaviour
 {
     /**
-     * Json character data reader
-     */
-    public CharacterDataReader reader;
-
-    /**
-     * Parsed data from character data Json reader
-     */
-    private CharacterData characterData;
-
-    /**
      * Prefab references
      */
-    public GameObject playerPrefab;
-    public List<GameObject> enemyPrefabs;
+    public BaseUnit playerUnit;
+    public List<BaseUnit> enemyUnits;
 
     /**
      * Battlestation locations to spawn player / enemies
@@ -31,12 +21,6 @@ public class BattleSystem : MonoBehaviour
      * Player menu to choose spells
      */
     public GameObject spellBook;
-
-    /**
-     * Unit datastructure
-     */
-    BaseUnit playerUnit;
-    BaseUnit enemyUnit;
 
     /**
      * Player / Enemey references
@@ -55,28 +39,22 @@ public class BattleSystem : MonoBehaviour
      */
     public BattleStateEnum state = BattleStateEnum.START;
 
+    /**
+     * Current level
+     */
     private int currentLevel = 0;
-    private int totalLevels = 4;
 
-    private readonly string CHARACTER_DATA_FILE = "characterData";
+    /**
+     * Total levels
+     */
+    private int totalLevels = 4;
 
     // Contructor
     void Start()
     {
-        this.ReadCharacterData();
         spellBook.SetActive(false);
-        playerGO = SimplePool.Spawn(playerPrefab, playerBattleStation);
+        playerGO = Instantiate(playerUnit.prefab, playerBattleStation);
         Restart();
-    }
-
-    /**
-     * Read Json character data from location
-     */
-    private void ReadCharacterData()
-    {
-        TextAsset characterData = Resources.Load(CHARACTER_DATA_FILE) as TextAsset;
-        this.reader = new CharacterDataReader(characterData);
-        this.characterData = this.reader.GetParsed();
     }
 
     private void Restart()
@@ -95,54 +73,52 @@ public class BattleSystem : MonoBehaviour
      */
     private IEnumerator SetupBattle(int level)
     {
-        this.Spawn(enemyPrefabs[currentLevel]);
-        this.playerUnit = this.BuildBaseUnit(this.characterData.units.Find((unit) => unit.prefabName == "Player"));
-        this.enemyUnit = this.BuildBaseUnit(this.characterData.units.Find((unit) => unit.prefabName == "Skeleton"));
+        this.Spawn(this.enemyUnits[currentLevel]);
 
-        playerHUD.SetHUD(playerUnit);
-        enemyHUD.SetHUD(enemyUnit);
+        playerHUD.SetHUD(this.playerUnit);
+        enemyHUD.SetHUD(this.enemyUnits[currentLevel]);
 
         yield return new WaitForSeconds(1f);
 
         state = BattleStateEnum.PLAYERTURN;
-        // PlayerTurn();
+        PlayerTurn();
     }
 
-    private BaseUnit BuildBaseUnit(UnitData data) {
-        GameObject baseUnit = new GameObject("BaseUnit");
-        baseUnit.SetActive(false);
-        BaseUnit unit = baseUnit.AddComponent<BaseUnit>();
-        unit = new BaseUnit(data);
-        baseUnit.SetActive(true);
-        return unit;
-    }
 
     private void PlayerTurn()
     {
-        Debug.Log("PLAYER");
         spellBook.SetActive(true);
     }
 
     private IEnumerator PlayerAttack(Action action)
     {
+        // this.playerUnit.Animate(action);
         yield return new WaitForSeconds(0.2f);
-        enemyUnit.ResolveAction(action);
-        State currentState = enemyUnit.state;
+        if (action.target == "player")
+        {
+            Debug.Log(action.actionName + ": PLAYER");
+            playerUnit.ResolveAction(action);
+        }
+        else
+            Debug.Log(action.actionName + ": ENEMY");
+        {
+            enemyUnits[currentLevel].ResolveAction(action);
+        }
         yield return new WaitForSeconds(0.2f);
-        enemyHUD.SetHP(enemyUnit.getHpRemaining());
+        enemyHUD.SetHP(this.enemyUnits[currentLevel].getHpRemaining());
+        playerHUD.SetHP(playerUnit.getHpRemaining());
         yield return new WaitForSeconds(2f);
 
-        if (currentState == State.DEAD)
+        if (this.enemyUnits[currentLevel].IsDead())
         {
-            currentState = State.ALIVE;
-            SimplePool.Despawn(enemyGO);
+            Destroy(enemyGO);
             state = BattleStateEnum.WON;
             StartCoroutine(EndBattle());
         }
         else
         {
-            // state = BattleStateEnum.ENEMYTURN;
-            // StartCoroutine(EnemyTurn());
+            state = BattleStateEnum.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
         }
     }
 
@@ -152,14 +128,11 @@ public class BattleSystem : MonoBehaviour
      * @param string actionName
      */
     public void PlayerAct(string actionName) {
-        if (state != BattleStateEnum.PLAYERTURN)
+        if (state != BattleStateEnum.PLAYERTURN) {
             return;
-
-            Debug.Log("ACT!");
+        }
 
         Action action = this.FindActionOfUnit(this.playerUnit, actionName);
-        Animator animation = playerGO.GetComponentInChildren<Animator>();
-        animation.SetTrigger(action.actionName);
         spellBook.SetActive(false);
         StartCoroutine(PlayerAttack(action));
     }
@@ -182,21 +155,11 @@ public class BattleSystem : MonoBehaviour
      *
      * @param GameObject enemyPrefab
      */
-    private void Spawn(GameObject enemyPrefab)
+    private void Spawn(BaseUnit enemy)
     {
-        enemyGO = SimplePool.Spawn(enemyPrefab, enemyBattleStation);
+        this.enemyGO = Instantiate(enemy.prefab, enemyBattleStation);
     }
 
-    // public void OnHealButton(int amountHeal)
-    // {
-    //     if (state != BattleStateEnum.PLAYERTURN)
-    //         return;
-    //     playerUnit.GainHealth(amountHeal);
-    //     playerHUD.SetHP(playerUnit.currentHP);
-
-    //     spellBook.SetActive(false);
-    //     StartCoroutine(EnemyTurn());
-    // }
 
     private IEnumerator EnemyTurn()
     {
@@ -205,26 +168,33 @@ public class BattleSystem : MonoBehaviour
         // Get enemy moves
         // Pick random attack
 
-
+        List<Action> chooseFrom = this.enemyUnits[currentLevel].actions;
+        Action action = this.FindActionOfUnit(this.enemyUnits[currentLevel], this.enemyUnits[currentLevel].actions[RandomHelper.Range(0, chooseFrom.Count)].actionName );
         yield return new WaitForSeconds(0.5f);
+        // ANIMATION
         // enemyUnit.DealAttack("basicAttack");
         yield return new WaitForSeconds(0.3f);
-        // playerUnit.TakeDamage(enemyUnit.damage);
+        if (action.target == "player") {
+            playerUnit.ResolveAction(action);
+        } else {
+            enemyUnits[currentLevel].ResolveAction(action);
+        }
         // State currentState = playerUnit.getState();
         yield return new WaitForSeconds(0.3f);
-        // playerHUD.SetHP(playerUnit.currentHP);
+        enemyHUD.SetHP(this.enemyUnits[currentLevel].getHpRemaining());
+        playerHUD.SetHP(playerUnit.getHpRemaining());
         yield return new WaitForSeconds(1f);
 
-        // if (currentState == State.DEAD)
-        // {
-        //     state = BattleStateEnum.LOST;
-        //     StartCoroutine(EndBattle());
-        // }
-        // else
-        // {
-        //     state = BattleStateEnum.PLAYERTURN;
-        //     PlayerTurn();
-        // }
+        if (playerUnit.IsDead())
+        {
+            state = BattleStateEnum.LOST;
+            StartCoroutine(EndBattle());
+        }
+        else
+        {
+            state = BattleStateEnum.PLAYERTURN;
+            PlayerTurn();
+        }
     }
 
     private IEnumerator EndBattle()

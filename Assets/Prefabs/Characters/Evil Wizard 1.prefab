@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7441897537639158063}
   - component: {fileID: 1614833007414895582}
   - component: {fileID: 3733454343465913370}
-  - component: {fileID: 8377669316018661756}
   m_Layer: 0
   m_Name: Evil Wizard 1
   m_TagString: Untagged
@@ -107,27 +106,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8377669316018661756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 249807215425239347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e9cb474c8f7cae4da3417138942f431, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  unitName: Evil Wizard 1
-  unitLevel: 3
-  unitIcon: {fileID: 1621431561, guid: c7a3c4c046540a143b6904045f5ba427, type: 3}
-  damage: 3
-  maxHP: 8
-  currentHP: 8
-  ani: {fileID: 3733454343465913370}
-  attackTypes: []
-  state: 0
 --- !u!1001 &3607670219392257663
 PrefabInstance:
   m_ObjectHideFlags: 0
