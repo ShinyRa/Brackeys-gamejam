@@ -19,9 +19,7 @@ public class SoundManagerScript : MonoBehaviour
 
     public void PlaySound(string clip)
     {
-        Debug.Log(clip);
         int index = this.clipNames.IndexOf(clip);
-        Debug.Log(index);
         if (index >= 0) {
             this.audioSrc.PlayOneShot(audioClips[index]);
         }
