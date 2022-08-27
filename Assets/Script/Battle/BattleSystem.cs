@@ -55,6 +55,8 @@ public class BattleSystem : MonoBehaviour
     private int currentLevel = 0;
     private int totalLevels = 3;
 
+
+    public SoundManagerScript sound;
     private readonly string CHARACTER_DATA_FILE = "characterData";
 
     void Start()
@@ -118,7 +120,6 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PlayerAttack()
     {
-        SoundManagerScript.PlaySound ("playerAttack");
         yield return new WaitForSeconds(0.2f);
         enemyUnit.TakeDamage(playerUnit.damage);
         State currentState = enemyUnit.getState();
@@ -144,6 +145,8 @@ public class BattleSystem : MonoBehaviour
     {
         if (state != BattleStateEnum.PLAYERTURN)
             return;
+        
+        sound.PlaySound(Random(0, 1) == 0 ? "playerAttack" : "playerAttack2");
         playerUnit.DealAttack(attackType);
         spellBook.SetActive(false);
         StartCoroutine(PlayerAttack());
@@ -153,6 +156,7 @@ public class BattleSystem : MonoBehaviour
     {
         if (state != BattleStateEnum.PLAYERTURN)
             return;
+        sound.PlaySound("playerHeal");
         playerUnit.GainHealth(amountHeal);
         playerHUD.SetHP(playerUnit.currentHP);
 
@@ -164,6 +168,12 @@ public class BattleSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         enemyUnit.DealAttack("thirdAttack");
+        int randomInt = Random(0, 2);
+        if (randomInt == 0) {
+            sound.PlaySound("playerTakeHit");
+        } else {
+            sound.PlaySound("playerTakeHit" + randomInt);
+        }
         yield return new WaitForSeconds(0.3f);
         playerUnit.TakeDamage(enemyUnit.damage);
         State currentState = playerUnit.getState();
@@ -173,6 +183,7 @@ public class BattleSystem : MonoBehaviour
 
         if (currentState == State.DEAD)
         {
+            sound.PlaySound("playerDeath");
             state = BattleStateEnum.LOST;
             StartCoroutine(EndBattle());
         }
