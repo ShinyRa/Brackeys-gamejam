@@ -1,7 +1,7 @@
 {
     "units": [
         {
-            "name": "Evil Wizard",
+            "name": "Evil Wizard 2",
             "prefabName": "Player",
             "health": 40,
             "actions": [
@@ -23,12 +23,6 @@
                     "animationClip": "waveAttack",
                     "successRate": 100,
                     "healthModifier": 20
-                },
-                {
-                    "name": "Dodge",
-                    "animationClip": "dodge",
-                    "successRate": 80,
-                    "healthModifier": 0
                 }
             ]
         }

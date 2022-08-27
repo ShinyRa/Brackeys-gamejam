@@ -1,70 +1,83 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public enum State { ALIVE, POISIONED, DEAD, WON }
 
-
 public class BaseUnit : MonoBehaviour
 {
+    public string unitName { get; set; }
+    public string prefabName { get; set; }
+    public float health { get; set; }
+    public List<Action> actions { get; set; }
+    public float damage = 0f;
+    public State state { get; set; } = State.ALIVE;
 
-    // public GameObject tagPrefab;
-
-    // public GameObject UnitTagGO;
-
-    // public TextMeshProUGUI text;
-
-    // PlayerTagScript playerTag;
-
-    public string unitName;
-    public int unitLevel;
-    public Sprite unitIcon;
-
-    public int damage;
-
-    public int maxHP;
-    public int currentHP;
-
-    public Animator ani;
-
-    public string[] attackTypes;
-
-    public State state = State.ALIVE;
-
-    public State getState() { return state; }
-
-    public void GainFullHealth()
-    {
-        currentHP = maxHP;
+    /**
+     * Initialize a new unit based on parsed UnitData
+     */
+    public BaseUnit(UnitData unit) {
+        this.Build(unit);
     }
 
-    public void DealAttack(string attackType)
-    {
-        ani.SetTrigger(attackType);
-    }
-
-    public void TakeDamage(int dmg)
-    {
-        ani.SetTrigger("takeHit");
-        currentHP -= dmg;
-
-        if (currentHP <= 0)
+    public void Build(UnitData unit) {
+        (string _name, float _health, string _prefabName, List<ActionData> _actions) = unit;
+        this.unitName = _name;
+        this.health = _health;
+        this.prefabName = _prefabName;
+        for (int i = 0; i < _actions.Count; i++)
         {
-            ani.SetBool("isDeath", true);
+            this.actions.Add(new Action(_actions[i]));
+        }
+    }
+    // public void Animate(Action action) {
+    //     this.animation.SetTrigger(action.animationClip);
+    // }
+
+    public void ResolveAction(Action action) {
+        // this.Animate(action);
+        this.damage += action.CalculateDamage();
+
+        if (IsDead()) {
+            // this.animation.SetBool("isDeath", true);
             state = State.DEAD;
         }
     }
 
-    public void GainHealth(int hp)
-    {
-        currentHP = currentHP + hp;
-
-        ani.SetTrigger("heal");
-
-        if (currentHP >= maxHP)
-        {
-            currentHP = maxHP;
-        }
+    public float getHpRemaining() {
+        return (this.health - this.damage);
     }
+
+    private bool IsDead() {
+        return this.getHpRemaining() < 0f;
+    }
+
+    // public void DealAttack(string attackType)
+    // {
+    //     ani.SetTrigger(attackType);
+    // }
+
+    // public void TakeDamage(int dmg)
+    // {
+    //     ani.SetTrigger("takeHit");
+    //     currentHP -= dmg;
+
+    //     if (currentHP <= 0)
+    //     {
+    //         ani.SetBool("isDeath", true);
+    //         state = State.DEAD;
+    //     }
+    // }
+
+    // public void GainHealth(int hp)
+    // {
+    //     currentHP = currentHP + hp;
+
+    //     ani.SetTrigger("heal");
+
+    //     if (currentHP >= maxHP)
+    //     {
+    //         currentHP = maxHP;
+    //     }
+    // }
 }

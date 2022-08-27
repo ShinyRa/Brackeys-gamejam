@@ -1,16 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
-using TMPro;
-using Random = System.Random;
 using UnityEngine.SceneManagement;
 
 public class BattleSystem : MonoBehaviour
 {
     /**
-     * JSon Character Data reader
+     * Json character data reader
      */
     public CharacterDataReader reader;
+
+    /**
+     * Parsed data from character data Json reader
+     */
+    private CharacterData characterData;
 
     /**
      * Prefab references
@@ -53,14 +56,14 @@ public class BattleSystem : MonoBehaviour
     public BattleStateEnum state = BattleStateEnum.START;
 
     private int currentLevel = 0;
-    private int totalLevels = 3;
+    private int totalLevels = 4;
 
     private readonly string CHARACTER_DATA_FILE = "characterData";
 
+    // Contructor
     void Start()
     {
         this.ReadCharacterData();
-
         spellBook.SetActive(false);
         playerGO = SimplePool.Spawn(playerPrefab, playerBattleStation);
         Restart();
@@ -73,34 +76,28 @@ public class BattleSystem : MonoBehaviour
     {
         TextAsset characterData = Resources.Load(CHARACTER_DATA_FILE) as TextAsset;
         this.reader = new CharacterDataReader(characterData);
-        CharacterData data = this.reader.GetList();
-        // this.characterData = this.reader.GetList();
-
-        // this.characterData.units
-
-        // Action[] actions = {new Action(), new Action(), new Action(), new Action()};
-        // spellBook.SetActions(actions);
-        for (int i = 0; i < data.units.Count; i++)
-        {
-            // Debug.Log("Assets/Prefabs/Characters/" + data.units[i].prefabName);
-            // GameObject test = Instantiate(Resources.Load("Assets/Prefabs/Characters/" + data.units[i].prefabName, typeof(GameObject))) as GameObject;
-            // this.unitPrefabs.Add();
-        }
+        this.characterData = this.reader.GetParsed();
     }
 
-    void Restart()
+    private void Restart()
     {
         state = BattleStateEnum.START;
         spellBook.SetActive(false);
         StartCoroutine(SetupBattle(currentLevel));
     }
 
-    IEnumerator SetupBattle(int level)
+    /**
+     * Setup player / enemy states before start of battle.
+     *
+     * @param int level
+     *
+     * @return IEnumerator
+     */
+    private IEnumerator SetupBattle(int level)
     {
-        enemyGO = SimplePool.Spawn(enemyPrefabs[level], enemyBattleStation);
-
-        playerUnit = playerGO.GetComponent<BaseUnit>();
-        enemyUnit = enemyGO.GetComponent<BaseUnit>();
+        this.Spawn(enemyPrefabs[currentLevel]);
+        this.playerUnit = this.BuildBaseUnit(this.characterData.units.Find((unit) => unit.prefabName == "Player"));
+        this.enemyUnit = this.BuildBaseUnit(this.characterData.units.Find((unit) => unit.prefabName == "Skeleton"));
 
         playerHUD.SetHUD(playerUnit);
         enemyHUD.SetHUD(enemyUnit);
@@ -108,21 +105,31 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         state = BattleStateEnum.PLAYERTURN;
-        PlayerTurn();
+        // PlayerTurn();
     }
 
-    void PlayerTurn()
+    private BaseUnit BuildBaseUnit(UnitData data) {
+        GameObject baseUnit = new GameObject("BaseUnit");
+        baseUnit.SetActive(false);
+        BaseUnit unit = baseUnit.AddComponent<BaseUnit>();
+        unit = new BaseUnit(data);
+        baseUnit.SetActive(true);
+        return unit;
+    }
+
+    private void PlayerTurn()
     {
+        Debug.Log("PLAYER");
         spellBook.SetActive(true);
     }
 
-    IEnumerator PlayerAttack()
+    private IEnumerator PlayerAttack(Action action)
     {
         yield return new WaitForSeconds(0.2f);
-        enemyUnit.TakeDamage(playerUnit.damage);
-        State currentState = enemyUnit.getState();
+        enemyUnit.ResolveAction(action);
+        State currentState = enemyUnit.state;
         yield return new WaitForSeconds(0.2f);
-        enemyHUD.SetHP(enemyUnit.currentHP);
+        enemyHUD.SetHP(enemyUnit.getHpRemaining());
         yield return new WaitForSeconds(2f);
 
         if (currentState == State.DEAD)
@@ -134,55 +141,93 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            state = BattleStateEnum.ENEMYTURN;
-            StartCoroutine(EnemyTurn());
+            // state = BattleStateEnum.ENEMYTURN;
+            // StartCoroutine(EnemyTurn());
         }
     }
 
-    public void OnAttackButton(string attackType)
-    {
+    /**
+     * Execute a player action based on action name
+     *
+     * @param string actionName
+     */
+    public void PlayerAct(string actionName) {
         if (state != BattleStateEnum.PLAYERTURN)
             return;
-        playerUnit.DealAttack(attackType);
+
+            Debug.Log("ACT!");
+
+        Action action = this.FindActionOfUnit(this.playerUnit, actionName);
+        Animator animation = playerGO.GetComponentInChildren<Animator>();
+        animation.SetTrigger(action.actionName);
         spellBook.SetActive(false);
-        StartCoroutine(PlayerAttack());
+        StartCoroutine(PlayerAttack(action));
     }
 
-    public void OnHealButton(int amountHeal)
-    {
-        if (state != BattleStateEnum.PLAYERTURN)
-            return;
-        playerUnit.GainHealth(amountHeal);
-        playerHUD.SetHP(playerUnit.currentHP);
 
-        spellBook.SetActive(false);
-        StartCoroutine(EnemyTurn());
+    /**
+     * Find action by name and unit.
+     *
+     * @param BaseUnit unit      unit where to find the action
+     * @param string actionName  name of the action
+     *
+     * @return Action
+     */
+    private Action FindActionOfUnit(BaseUnit prefab, string actionName) {
+        return prefab.actions.Find((action) => action.actionName == actionName);
     }
 
-    IEnumerator EnemyTurn()
+    /**
+     * Spawn enemy into battle.
+     *
+     * @param GameObject enemyPrefab
+     */
+    private void Spawn(GameObject enemyPrefab)
     {
+        enemyGO = SimplePool.Spawn(enemyPrefab, enemyBattleStation);
+    }
+
+    // public void OnHealButton(int amountHeal)
+    // {
+    //     if (state != BattleStateEnum.PLAYERTURN)
+    //         return;
+    //     playerUnit.GainHealth(amountHeal);
+    //     playerHUD.SetHP(playerUnit.currentHP);
+
+    //     spellBook.SetActive(false);
+    //     StartCoroutine(EnemyTurn());
+    // }
+
+    private IEnumerator EnemyTurn()
+    {
+        // TODO:
+        // Get current enemy
+        // Get enemy moves
+        // Pick random attack
+
+
         yield return new WaitForSeconds(0.5f);
-        enemyUnit.DealAttack("basicAttack");
+        // enemyUnit.DealAttack("basicAttack");
         yield return new WaitForSeconds(0.3f);
-        playerUnit.TakeDamage(enemyUnit.damage);
-        State currentState = playerUnit.getState();
+        // playerUnit.TakeDamage(enemyUnit.damage);
+        // State currentState = playerUnit.getState();
         yield return new WaitForSeconds(0.3f);
-        playerHUD.SetHP(playerUnit.currentHP);
+        // playerHUD.SetHP(playerUnit.currentHP);
         yield return new WaitForSeconds(1f);
 
-        if (currentState == State.DEAD)
-        {
-            state = BattleStateEnum.LOST;
-            StartCoroutine(EndBattle());
-        }
-        else
-        {
-            state = BattleStateEnum.PLAYERTURN;
-            PlayerTurn();
-        }
+        // if (currentState == State.DEAD)
+        // {
+        //     state = BattleStateEnum.LOST;
+        //     StartCoroutine(EndBattle());
+        // }
+        // else
+        // {
+        //     state = BattleStateEnum.PLAYERTURN;
+        //     PlayerTurn();
+        // }
     }
 
-    IEnumerator EndBattle()
+    private IEnumerator EndBattle()
     {
         if (state == BattleStateEnum.WON)
         {
@@ -192,7 +237,7 @@ public class BattleSystem : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
             }
             currentLevel++;
-            enemyUnit.GainFullHealth();
+            // enemyUnit.GainFullHealth();
             Restart();
         }
         else if (state == BattleStateEnum.LOST)
@@ -203,11 +248,5 @@ public class BattleSystem : MonoBehaviour
             Destroy(enemyGO);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
-    }
-
-    private int Random(int min, int max)
-    {
-        Random rnd = new Random();
-        return rnd.Next(min, max);
     }
 }
