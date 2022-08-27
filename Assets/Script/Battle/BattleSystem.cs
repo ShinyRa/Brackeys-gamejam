@@ -62,7 +62,7 @@ public class BattleSystem : MonoBehaviour
         this.ReadCharacterData();
 
         spellBook.SetActive(false);
-        playerGO = SimplePool.Spawn(playerPrefab, playerBattleStation);
+        playerGO = Instantiate(playerPrefab, playerBattleStation);
         Restart();
     }
 
@@ -97,7 +97,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator SetupBattle(int level)
     {
-        enemyGO = SimplePool.Spawn(enemyPrefabs[level], enemyBattleStation);
+        enemyGO = Instantiate(enemyPrefabs[level], enemyBattleStation);
 
         playerUnit = playerGO.GetComponent<BaseUnit>();
         enemyUnit = enemyGO.GetComponent<BaseUnit>();
@@ -128,7 +128,7 @@ public class BattleSystem : MonoBehaviour
         if (currentState == State.DEAD)
         {
             currentState = State.ALIVE;
-            SimplePool.Despawn(enemyGO);
+            Destroy(enemyGO);
             state = BattleStateEnum.WON;
             StartCoroutine(EndBattle());
         }
