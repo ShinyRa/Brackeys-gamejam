@@ -118,6 +118,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PlayerAttack()
     {
+        SoundManagerScript.PlaySound ("playerAttack");
         yield return new WaitForSeconds(0.2f);
         enemyUnit.TakeDamage(playerUnit.damage);
         State currentState = enemyUnit.getState();
@@ -162,7 +163,7 @@ public class BattleSystem : MonoBehaviour
     IEnumerator EnemyTurn()
     {
         yield return new WaitForSeconds(0.5f);
-        enemyUnit.DealAttack("basicAttack");
+        enemyUnit.DealAttack("thirdAttack");
         yield return new WaitForSeconds(0.3f);
         playerUnit.TakeDamage(enemyUnit.damage);
         State currentState = playerUnit.getState();

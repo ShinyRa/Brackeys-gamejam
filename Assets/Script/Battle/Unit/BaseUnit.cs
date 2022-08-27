@@ -27,6 +27,8 @@ public class BaseUnit : MonoBehaviour
     public int currentHP;
 
     public Animator ani;
+    public GameObject projectileGO;
+    public GameObject projectilePrefab;
 
     public string[] attackTypes;
 
@@ -42,6 +44,10 @@ public class BaseUnit : MonoBehaviour
     public void DealAttack(string attackType)
     {
         ani.SetTrigger(attackType);
+        if(attackType == "thirdAttack")
+        {
+            projectileGO = Instantiate(projectilePrefab);
+        }
     }
 
     public void TakeDamage(int dmg)

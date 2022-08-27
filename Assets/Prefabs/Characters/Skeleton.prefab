@@ -107,6 +107,14 @@ PrefabInstance:
       propertyPath: unitLevel
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
+      propertyPath: projectile
+      value: 
+      objectReference: {fileID: 2970662674129563752, guid: a156df66f1296f04a91592021429c83b, type: 3}
+    - target: {fileID: 8598651831874574247, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 2970662674129563752, guid: 07b25b3bfbcd88446a305c803f36dbc3, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85d7dd8b09b2fda46835b552d0b2be99, type: 3}
 --- !u!95 &2429330729414955664 stripped
