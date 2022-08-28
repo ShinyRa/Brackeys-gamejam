@@ -5,15 +5,11 @@ using UnityEngine;
 public class SoundManagerScript : MonoBehaviour
 {
 
-    public static AudioClip playerAttackSound, playerAttack2Sound, playerDeathSound, playerHealSound, playerTakeHit1, playerTakeHit2, playerTakeHit3;
-    static AudioSource audioSrc;
+    public List<string> clipNames;
+
+    public List<AudioClip> audioClips;
+    public AudioSource audioSrc;
     // Start is called before the first frame update
-    void Start()
-    {
-        playerAttackSound = Resources.Load<AudioClip> ("playerAttack");
-    
-        audioSrc = GetComponent<AudioSource> ();
-    }
 
     // Update is called once per frame
     void Update()
@@ -21,13 +17,11 @@ public class SoundManagerScript : MonoBehaviour
 
     }
 
-    public static void PlaySound (string clip)
+    public void PlaySound(string clip)
     {
-        switch (clip)
-        {
-            case "playerAttack":
-                audioSrc.PlayOneShot (playerAttackSound);
-                break;
+        int index = this.clipNames.IndexOf(clip);
+        if (index >= 0) {
+            this.audioSrc.PlayOneShot(audioClips[index]);
         }
     }
 }

@@ -55,6 +55,8 @@ public class BattleSystem : MonoBehaviour
     private int currentLevel = 0;
     private int totalLevels = 3;
 
+
+    public SoundManagerScript sound;
     private int amountOfDamage;
     public GameObject healButton;
 
@@ -122,7 +124,6 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PlayerAttack(string attackType)
     {
-        // SoundManagerScript.PlaySound ("playerAttack");
         yield return new WaitForSeconds(0.2f);
         if (attackType == "waveAttack")
         {
@@ -155,6 +156,8 @@ public class BattleSystem : MonoBehaviour
     {
         if (state != BattleStateEnum.PLAYERTURN)
             return;
+        
+        sound.PlaySound(Random(0, 1) == 0 ? "playerAttack" : "playerAttack2");
         playerUnit.DealAttack(attackType);
         playerHUD.SetHP(playerUnit.currentHP);
         spellBook.SetActive(false);
@@ -165,6 +168,7 @@ public class BattleSystem : MonoBehaviour
     {
         if (state != BattleStateEnum.PLAYERTURN)
             return;
+        sound.PlaySound("playerHeal");
         playerUnit.GainFullHealth();
         playerHUD.SetHP(playerUnit.currentHP);
         healButton.SetActive(false);
@@ -192,8 +196,6 @@ public class BattleSystem : MonoBehaviour
             string randomdAttack = getAttack(Random(0,3));
             enemyUnit.DealAttack(randomdAttack);
 
-            yield return new WaitForSeconds(0.3f);
-
             if (randomdAttack == "basicAttack") {
                 amountOfDamage = enemyUnit.damage + 1;
             } else if (randomdAttack == "secondAttack"){
@@ -203,6 +205,13 @@ public class BattleSystem : MonoBehaviour
             }
         }
         
+        int randomInt = Random(0, 2);
+        if (randomInt == 0) {
+            sound.PlaySound("playerTakeHit");
+        } else {
+            sound.PlaySound("playerTakeHit" + randomInt);
+        }
+        yield return new WaitForSeconds(0.3f);
         playerUnit.TakeDamage(amountOfDamage);
         State currentState = playerUnit.getState();
 
@@ -214,6 +223,7 @@ public class BattleSystem : MonoBehaviour
 
         if (currentState == State.DEAD)
         {
+            sound.PlaySound("playerDeath");
             state = BattleStateEnum.LOST;
             StartCoroutine(EndBattle());
         }
