@@ -111,7 +111,7 @@ public class BattleSystem : MonoBehaviour
         playerHUD.SetHUD(playerUnit);
         enemyHUD.SetHUD(enemyUnit);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0f);
 
         state = BattleStateEnum.PLAYERTURN;
         PlayerTurn();
@@ -122,8 +122,11 @@ public class BattleSystem : MonoBehaviour
         spellBook.SetActive(true);
     }
 
-    IEnumerator PlayerAttack(string attackType)
+    IEnumerator PlayerAttack(string attackType, string attackSound)
     {
+
+        yield return new WaitForSeconds(0.1f);
+        sound.PlaySound(attackSound);
         yield return new WaitForSeconds(0.2f);
         if (attackType == "waveAttack")
         {
@@ -136,7 +139,7 @@ public class BattleSystem : MonoBehaviour
         State currentState = enemyUnit.getState();
         yield return new WaitForSeconds(0.2f);
         enemyHUD.SetHP(enemyUnit.currentHP);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         if (currentState == State.DEAD)
         {
@@ -157,20 +160,21 @@ public class BattleSystem : MonoBehaviour
         if (state != BattleStateEnum.PLAYERTURN)
             return;
         
-        sound.PlaySound(Random(0, 1) == 0 ? "playerAttack" : "playerAttack2");
+        sound.PlaySound("UIClickSound");
         playerUnit.DealAttack(attackType);
         playerHUD.SetHP(playerUnit.currentHP);
         spellBook.SetActive(false);
-        StartCoroutine(PlayerAttack(attackType));
+        StartCoroutine(PlayerAttack(attackType, Random(0, 1) == 0 ? "playerAttack" : "playerAttack2"));
     }
 
     public void OnHealButton(int amountHeal)
     {
         if (state != BattleStateEnum.PLAYERTURN)
             return;
-        sound.PlaySound("playerHeal");
+        sound.PlaySound("UIClickSound");
         playerUnit.GainFullHealth();
         playerHUD.SetHP(playerUnit.currentHP);
+        sound.PlaySound("playerHeal");
         healButton.SetActive(false);
         spellBook.SetActive(false);
         StartCoroutine(EnemyTurn());
@@ -179,12 +183,10 @@ public class BattleSystem : MonoBehaviour
     IEnumerator EnemyTurn()
     {
         yield return new WaitForSeconds(0.5f);
-        Debug.Log(enemyUnit.name);
         if (enemyUnit.name == "Evil Wizard 1(Clone)")
         {
             string randomdAttack = getEvilAttack(Random(0,2));
-            Debug.Log("YES");
-             if (randomdAttack == "slamAttack") {
+            if (randomdAttack == "slamAttack") {
                 amountOfDamage = enemyUnit.damage;
             } else if (randomdAttack == "waveAttack"){
                 amountOfDamage = enemyUnit.damage + 2;
@@ -232,6 +234,12 @@ public class BattleSystem : MonoBehaviour
             state = BattleStateEnum.PLAYERTURN;
             PlayerTurn();
         }
+        yield return new WaitForSeconds(0.3f);
+        // yield return new WaitForSeconds(0.3f);
+        playerHUD.SetHP(playerUnit.currentHP);
+        // yield return new WaitForSeconds(1f);
+
+        
     }
 
     private string getAttack(int randomint)
@@ -266,7 +274,6 @@ public class BattleSystem : MonoBehaviour
     {
         if (state == BattleStateEnum.WON)
         {
-            Debug.Log("You WON");
             if (currentLevel == totalLevels)
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
@@ -278,7 +285,6 @@ public class BattleSystem : MonoBehaviour
         }
         else if (state == BattleStateEnum.LOST)
         {
-            Debug.Log("You LOST");
             yield return new WaitForSeconds(2f);
             Destroy(playerGO);
             Destroy(enemyGO);

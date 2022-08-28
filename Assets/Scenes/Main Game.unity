@@ -3344,6 +3344,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fbfedcbb824f324e970f76efd10228a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clipNames: []
+  audioClips: []
+  audioSrc: {fileID: 0}
 --- !u!82 &1664715129
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3549,6 +3552,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1735685990}
   - component: {fileID: 1735685989}
+  - component: {fileID: 1735685991}
   m_Layer: 0
   m_Name: Audio Source
   m_TagString: Untagged
@@ -3665,8 +3669,21 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1735685991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1735685988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b54de6ad5d35f447b9ff77f62878068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectID: 
 --- !u!1 &1773706283 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8707173203147167184, guid: 74ff610a16593d74b9da659febf007f4, type: 3}
@@ -4145,6 +4162,7 @@ MonoBehaviour:
   - playerTakeHit
   - playerTakeHit1
   - playerTakeHit2
+  - UIClickSound
   audioClips:
   - {fileID: 8300000, guid: d4d41bd94d020e14cbf8e55682646c09, type: 3}
   - {fileID: 8300000, guid: f042ac26f0c850b4d8b90bc712686c4d, type: 3}
@@ -4153,6 +4171,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ed77130ee1b285641b415e989b417757, type: 3}
   - {fileID: 8300000, guid: 7e33bbd64d4e4b24b9b4e7ee59da0308, type: 3}
   - {fileID: 8300000, guid: a4d5fcaf9319222498ce1096d0a93fad, type: 3}
+  - {fileID: 8300000, guid: 9cf62e8c56d2ed44d8b16d2b6a7adb3a, type: 3}
   audioSrc: {fileID: 1735685989}
 --- !u!4 &1960190090
 Transform:
@@ -4167,7 +4186,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1980561123
 GameObject:

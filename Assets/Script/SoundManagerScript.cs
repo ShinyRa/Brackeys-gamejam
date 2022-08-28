@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SoundManagerScript : MonoBehaviour
 {
@@ -9,12 +10,25 @@ public class SoundManagerScript : MonoBehaviour
 
     public List<AudioClip> audioClips;
     public AudioSource audioSrc;
-    // Start is called before the first frame update
 
-    // Update is called once per frame
+    public Slider volumeSlider;
+
+    private float volume = 0.8f;
+    void Start()
+    {
+        volume = PlayerPrefs.GetFloat("volume");
+        this.audioSrc.volume = volume;
+        this.volumeSlider.value = volume;
+    }
+    
     void Update()
     {
+        this.audioSrc.volume = volume;
+        PlayerPrefs.SetFloat("volume", this.volume);
+    }
 
+    public void VolumeUpdater() {
+        this.volume = this.volumeSlider.value;
     }
 
     public void PlaySound(string clip)
