@@ -122,18 +122,17 @@ public class BattleSystem : MonoBehaviour
         spellBook.SetActive(true);
     }
 
-    IEnumerator PlayerAttack(string attackType, string attackSound)
+    IEnumerator PlayerAttack(string attackType)
     {
-
-        yield return new WaitForSeconds(0.1f);
-        sound.PlaySound(attackSound);
         yield return new WaitForSeconds(0.2f);
         if (attackType == "waveAttack")
         {
             enemyUnit.TakeDamage(playerUnit.damage + 3);
+            sound.PlaySound("playerAttack2");
         } else
         {
             enemyUnit.TakeDamage(playerUnit.damage);
+            sound.PlaySound("playerAttack");
         }
 
         State currentState = enemyUnit.getState();
@@ -164,7 +163,7 @@ public class BattleSystem : MonoBehaviour
         playerUnit.DealAttack(attackType);
         playerHUD.SetHP(playerUnit.currentHP);
         spellBook.SetActive(false);
-        StartCoroutine(PlayerAttack(attackType, Random(0, 1) == 0 ? "playerAttack" : "playerAttack2"));
+        StartCoroutine(PlayerAttack(attackType));
     }
 
     public void OnHealButton(int amountHeal)
@@ -226,6 +225,7 @@ public class BattleSystem : MonoBehaviour
         if (currentState == State.DEAD)
         {
             sound.PlaySound("playerDeath");
+            yield return new WaitForSeconds(2f);
             state = BattleStateEnum.LOST;
             StartCoroutine(EndBattle());
         }
