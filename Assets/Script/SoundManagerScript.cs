@@ -17,14 +17,16 @@ public class SoundManagerScript : MonoBehaviour
     void Start()
     {
         volume = PlayerPrefs.GetFloat("volume");
-        this.audioSrc.volume = volume;
-        this.volumeSlider.value = volume;
     }
     
     void Update()
     {
+        if (this.audioSrc != null)
+        {
         this.audioSrc.volume = volume;
         PlayerPrefs.SetFloat("volume", this.volume);
+            
+        }
     }
 
     public void VolumeUpdater() {
